@@ -34,8 +34,25 @@ namespace LinqProject
 
             //AscDescTest(products);
 
-            ClassicLinqTest(products);
+            //ClassicLinqTest(products);
 
+            //JoinText(categories, products);
+
+        }
+
+        private static void JoinText(List<Category> categories, List<Product> products)
+        {
+            var result = from p in products
+                         join c in categories // product'lardaki her bir p ile categories'deki her bir c'yi CategoryId'ye göre join et.
+                         on p.CategoryId equals c.CategoryId
+                         where p.UnitPrice > 5000
+                         orderby p.UnitPrice descending
+                         select new ProductDto { ProductId = p.ProductId, CategoryName = c.CategoryName, ProductName = p.ProductName, UnitPrice = p.UnitPrice };
+
+            foreach (var productDto in result)
+            {
+                Console.WriteLine("{0} --- {1}", productDto.ProductName, productDto.CategoryName);
+            }
         }
 
         private static void ClassicLinqTest(List<Product> products)
